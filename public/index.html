@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zaxFHE — Fhenix FHE dApp Builder</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@700;800&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0c;
+  --bg2: #0f0f14;
+  --border: #1a1a24;
+  --fhe: #7c5cfc;
+  --fhe2: #a78bfa;
+  --fhe-dim: rgba(124,92,252,0.1);
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --mono: 'DM Mono', monospace;
+  --head: 'Syne', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ── Layout ── */
+.wrap { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+
+/* ── Nav ── */
+nav {
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--head);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  text-decoration: none;
+}
+.nav-icon {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--fhe), #4f46e5);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+.nav-links { display: flex; gap: 20px; }
+.nav-links a {
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--text); }
+
+/* ── Hero ── */
+.hero {
+  padding: 72px 0 60px;
+  text-align: center;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--fhe-dim);
+  border: 1px solid rgba(124,92,252,0.25);
+  border-radius: 20px;
+  font-size: 11px;
+  color: var(--fhe2);
+  margin-bottom: 28px;
+}
+.dot {
+  width: 5px; height: 5px;
+  background: var(--fhe);
+  border-radius: 50%;
+  animation: blink 2s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+h1 {
+  font-family: var(--head);
+  font-size: clamp(34px, 6vw, 54px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+}
+h1 .accent {
+  background: linear-gradient(135deg, var(--fhe), var(--fhe2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 520px;
+  margin: 0 auto 40px;
+  line-height: 1.65;
+  font-family: var(--mono);
+}
+
+/* ── Connect Box ── */
+.connect-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: left;
+}
+.connect-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fhe);
+  margin-bottom: 10px;
+}
+.connect-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.connect-code {
+  flex: 1;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--text);
+  background: none;
+  border: none;
+  outline: none;
+  word-break: break-all;
+}
+.copy-btn {
+  background: var(--fhe-dim);
+  border: 1px solid rgba(124,92,252,0.3);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fhe2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.copy-btn:hover { background: rgba(124,92,252,0.2); }
+.copy-btn.copied { color: #34d399; border-color: #34d399; background: rgba(52,211,153,0.1); }
+
+/* ── Section ── */
+section { padding: 56px 0; border-top: 1px solid var(--border); }
+.section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fhe);
+  margin-bottom: 24px;
+}
+h2 {
+  font-family: var(--head);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  letter-spacing: -0.01em;
+}
+
+/* ── Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 16px;
+  transition: border-color 0.15s;
+}
+.card:hover { border-color: rgba(124,92,252,0.3); }
+.card-icon { font-size: 20px; margin-bottom: 10px; }
+.card-title {
+  font-family: var(--head);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* ── Prompts ── */
+.prompts { display: flex; flex-direction: column; gap: 8px; }
+.prompt {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--muted);
+  font-family: var(--mono);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+}
+.prompt::before { content: '> '; color: var(--fhe); }
+.prompt:hover { border-color: rgba(124,92,252,0.3); color: var(--text); }
+
+/* ── Table ── */
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: 400;
+}
+td {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  vertical-align: top;
+}
+td code {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--fhe2);
+  background: var(--fhe-dim);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+td strong { color: var(--text); }
+tr:hover td { background: rgba(255,255,255,0.01); }
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  text-align: center;
+}
+.footer-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-text { font-size: 12px; color: var(--muted); }
+.footer-links { display: flex; gap: 16px; }
+.footer-links a { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: var(--fhe2); }
+
+/* ── Selection ── */
+::selection { background: rgba(124,92,252,0.25); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="/">
+      <div class="nav-icon">🔐</div>
+      zaxFHE
+    </a>
+    <div class="nav-links">
+      <a href="https://fhenix.io" target="_blank">Fhenix</a>
+      <a href="https://cofhe-docs.fhenix.zone" target="_blank">Docs</a>
+      <a href="https://github.com/zaxcoraider/zaxfhe" target="_blank">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-badge"><div class="dot"></div>Live on Vercel · MCP 2024-11-05</div>
+    <h1>The Ultimate<br><span class="accent">Fhenix FHE</span><br>dApp Builder</h1>
+    <p class="hero-sub">Connect to Claude Code. Say "Hey zaxFHE, build me a private DEX." Get back a complete DApp — FHE contract + frontend + tests + deploy. Instantly.</p>
+
+    <div class="connect-box">
+      <div class="connect-label">▶ Connect with Claude Code</div>
+      <div class="connect-row">
+        <span class="connect-code" id="cmd">claude mcp add zaxfhe --transport http https://zaxfhe.vercel.app/mcp</span>
+        <button class="copy-btn" onclick="copyCmd()">copy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Capabilities ── -->
+<div class="wrap">
+  <section>
+    <div class="section-label">What zaxFHE builds</div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">🔐</div>
+        <div class="card-title">FHE Contracts</div>
+        <div class="card-desc">Encrypted state, private logic, correct FHE.sol patterns — allowThis, allowSender, FHE.select</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <div class="card-title">Private Tokens</div>
+        <div class="card-desc">fhERC-20 with hidden balances, encrypted transfers, permit-gated views</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🗳️</div>
+        <div class="card-title">Private Voting</div>
+        <div class="card-desc">Encrypted tallies, sealed governance, DAO privacy — votes hidden until reveal</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔨</div>
+        <div class="card-title">Sealed Auctions</div>
+        <div class="card-desc">Hidden bids, encrypted price discovery — nobody sees amounts on-chain</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <div class="card-title">FHE Security Audit</div>
+        <div class="card-desc">27 vulnerability patterns — 9 CRITICAL, 10 HIGH, 8 MEDIUM — with auto-fix suggestions</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Full Stack DApps</div>
+        <div class="card-desc">Solidity + React + cofhejs + Hardhat tests + deploy script — all at once</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── Prompts ── -->
+<div class="wrap">
+  <section>
+    <div class="section-label">Try it</div>
+    <div class="prompts">
+      <button class="prompt" onclick="copyPrompt(this)">"Hey zaxFHE, build me a private DEX"</button>
+      <button class="prompt" onclick="copyPrompt(this)">"Hey zaxFHE, build me a sealed-bid NFT auction called CryptoAuction"</button>
+      <button class="prompt" onclick="copyPrompt(this)">"Hey zaxFHE, build me a confidential ERC20 token called ShadowToken"</button>
+      <button class="prompt" onclick="copyPrompt(this)">"zaxFHE audit this contract: [paste Solidity code]"</button>
+      <button class="prompt" onclick="copyPrompt(this)">"zaxFHE explain CoFHE architecture"</button>
+      <button class="prompt" onclick="copyPrompt(this)">"zaxFHE set up a Hardhat project called PrivateBank on arbitrum-sepolia"</button>
+    </div>
+  </section>
+</div>
+
+<!-- ── Tools ── -->
+<div class="wrap">
+  <section>
+    <div class="section-label">Tools</div>
+    <div class="tbl-wrap">
+      <table>
+        <tr>
+          <th>Tool</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td><code>zaxfhe_build</code></td>
+          <td><strong>MAIN TOOL</strong> — Full DApp from plain English. Auto-detects template. Outputs contract + frontend + tests + deploy + audit</td>
+        </tr>
+        <tr>
+          <td><code>zaxfhe_scaffold_contract</code></td>
+          <td>FHE Solidity contract from template (counter, private-token, voting, auction)</td>
+        </tr>
+        <tr>
+          <td><code>zaxfhe_scaffold_frontend</code></td>
+          <td>React + cofhejs frontend with wallet, encrypt, permit, unseal flow</td>
+        </tr>
+        <tr>
+          <td><code>zaxfhe_scaffold_tests</code></td>
+          <td>Hardhat + cofhejs tests with encrypt/unseal and permit flows</td>
+        </tr>
+        <tr>
+          <td><code>zaxfhe_audit</code></td>
+          <td>Security audit vs 27 FHE vulnerability patterns (9 CRITICAL, 10 HIGH, 8 MEDIUM)</td>
+        </tr>
+        <tr>
+          <td><code>zaxfhe_explain</code></td>
+          <td>Explain any FHE/Fhenix concept — CoFHE, permits, FHE.sol, cofhejs SDK</td>
+        </tr>
+        <tr>
+          <td><code>zaxfhe_encrypt_helper</code></td>
+          <td>Exact cofhejs encrypt + unseal code for any FHE type</td>
+        </tr>
+        <tr>
+          <td><code>zaxfhe_project_setup</code></td>
+          <td>Full Hardhat project scaffold — package.json, hardhat.config.ts, folder structure</td>
+        </tr>
+        <tr>
+          <td><code>zaxfhe_network_info</code></td>
+          <td>RPC endpoints, chain IDs, CoFHE contract addresses for all networks</td>
+        </tr>
+        <tr>
+          <td><code>zaxfhe_read_contract</code></td>
+          <td>Call read-only functions on deployed contracts via ethers.js</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+</div>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-text">Built for <a href="https://fhenix.io" target="_blank" style="color:var(--fhe2);text-decoration:none;">Fhenix</a> — FHE on Ethereum</span>
+    <div class="footer-links">
+      <a href="https://fhenix.io" target="_blank">Fhenix</a>
+      <a href="https://cofhe-docs.fhenix.zone" target="_blank">CoFHE Docs</a>
+      <a href="https://github.com/zaxcoraider/zaxfhe" target="_blank">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function copyCmd() {
+  const btn = document.querySelector('.copy-btn');
+  const text = document.getElementById('cmd').textContent.trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyPrompt(el) {
+  const text = el.textContent.replace(/^"/, '').replace(/"$/, '');
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = el.textContent;
+    el.textContent = '✓ copied to clipboard';
+    el.style.color = '#34d399';
+    setTimeout(() => { el.textContent = orig; el.style.color = ''; }, 1500);
+  });
+}
+</script>
+
+</body>
+</html>

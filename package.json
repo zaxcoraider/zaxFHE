@@ -1,0 +1,27 @@
+{
+  "name": "zaxfhe",
+  "version": "1.0.0",
+  "description": "Agentic MCP server that turns Claude Code into an expert Fhenix FHE developer",
+  "type": "module",
+  "main": "api/mcp.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "ethers": "^6.9.0"
+  },
+  "devDependencies": {
+    "@vercel/node": "^3.0.0"
+  },
+  "keywords": [
+    "fhe",
+    "fhenix",
+    "cofhe",
+    "mcp",
+    "claude",
+    "blockchain",
+    "privacy"
+  ],
+  "license": "MIT"
+}
